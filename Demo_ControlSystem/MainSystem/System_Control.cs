@@ -6,11 +6,25 @@ using System.Threading.Tasks;
 
 namespace Demo_ControlSystem.MainSystem
 {
-    
+
+
+    /// <summary>
+    /// 宣告委派
+    /// </summary>
+    /// <param name="Level"></param>
+    delegate void SYSChangePermission(string Number);
+
+
     class System_Control
     {
-        public System_List SYSLIST = new System_List();
-        public Permissions PERMISS = new Permissions();
+        internal System_List SYSLIST = new System_List();
+        internal Permissions PERMISS = new Permissions();
+
+        /// <summary>
+        /// 當權限等極切換時觸發(委派)
+        /// </summary>
+        public event SYSChangePermission SYSOnSysLevelChanging;
+
 
         #region Event 管理(匯入)
 
@@ -37,8 +51,6 @@ namespace Demo_ControlSystem.MainSystem
         }
 
         #endregion
-
-
 
         #region 相關Event觸發(方法)
 
@@ -75,6 +87,7 @@ namespace Demo_ControlSystem.MainSystem
             if (Level == PermissionList.Level_3_SeniorEngineer) { _num = "SeniorEngineer"; }
             if (Level == PermissionList.Level_10_Designer) { _num = "Designer"; }
 
+            SYSOnSysLevelChanging(_num);
 
             //label9.Text = "Permission : " + _num;
             CheckPermission(Level);

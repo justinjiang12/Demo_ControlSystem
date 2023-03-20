@@ -13,26 +13,26 @@ namespace Demo_ControlSystem.MainSystem
     /// 宣告委派
     /// </summary>
     /// <param name="Level"></param>
-    delegate void ChangePermission(PermissionList Level);
+    delegate void ChangePermission(PermissionList Level );
 
     class Permissions
     {
         /// <summary>
         /// 當權限等極切換時觸發(委派)
         /// </summary>
-        public  event ChangePermission OnSysLevelChanging;
+        public event ChangePermission OnSysLevelChanging;
 
 
         /// <summary>
         /// 權限等級概述
         /// </summary>
-        private  PermissionList _permissionLevel = PermissionList.Level_0_Guest;
+        private PermissionList _permissionLevel = PermissionList.Level_0_Guest;
 
 
         /// <summary>
         /// !!Important!! 切換參數時的觸發
         /// </summary>
-        public  PermissionList Permission_Level
+        public PermissionList Permission_Level
         {
             get
             {
