@@ -16,28 +16,28 @@ namespace Demo_ControlSystem.MainSystem
     delegate void ChangeSysControl(SysControl State);
 
 
-    class SystemControl
+    class System_List
     {
         /// <summary>
         /// 當系統參數切換時觸發(委派)
         /// </summary>
-        public static event ChangeSysModel OnSysModelChanging;
-        public static event ChangeSysControl OnSysControlChanging;
+        public  event ChangeSysModel OnSysModelChanging;
+        public  event ChangeSysControl OnSysControlChanging;
 
         /// <summary>
         /// 系統狀態列概述
         /// </summary>
-        private static SysModel _Mstate = SysModel.Standby;
+        public  SysModel _Mstate = SysModel.Standby;
 
         /// <summary>
         /// 系統狀態列概述
         /// </summary>
-        private static SysControl _Cstate = SysControl.Auto_Stop;
+        public  SysControl _Cstate = SysControl.Auto_Stop;
 
         /// <summary>
         /// !!Important!! 切換參數時的觸發
         /// </summary>
-        public static SysModel Model_State
+        public  SysModel Model_State
         {
             get
             {
@@ -53,7 +53,7 @@ namespace Demo_ControlSystem.MainSystem
         /// <summary>
         /// !!Important!! 切換參數時的觸發
         /// </summary>
-        public static SysControl Control_State
+        public  SysControl Control_State
         {
             get
             {
@@ -220,4 +220,9 @@ namespace Demo_ControlSystem.MainSystem
 
 
     }
+
+
+
+
+
 }
