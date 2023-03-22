@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace Demo_ControlSystem.MainSystem
 {
-
-
     /// <summary>
     /// 宣告委派
     /// </summary>
     /// <param name="Level"></param>
-    delegate void SYSChangePermission(string Number);
+    delegate void SYSChangePermission(string _state);
 
 
     class System_Control
@@ -24,6 +22,30 @@ namespace Demo_ControlSystem.MainSystem
         /// 當權限等極切換時觸發(委派)
         /// </summary>
         public event SYSChangePermission SYSOnSysLevelChanging;
+
+        private string _levelState = "***"; //對內訊號
+        public string LevelState
+        {
+            get
+            {
+                return _levelState;
+            }
+            set
+            {
+                _levelState = value;
+                SYSOnSysLevelChanging(_levelState);
+            }
+        } //對外訊號(R/W)
+
+
+        public System_Control()
+        {
+            ISystem_EventLoad();
+            IPermission_EventLoad();
+        }
+
+
+
 
 
         #region Event 管理(匯入)
@@ -37,7 +59,7 @@ namespace Demo_ControlSystem.MainSystem
             SYSLIST.OnSysControlChanging += ChangeSysControlState;
             //委派方法
             //thr_control.L_GrabRobot.OnChangeLoopStep += ChangeGLoopStep;
-            SYSLIST.Model_State = SysModel.Manual;
+            
         }
 
         /// <summary>
@@ -47,7 +69,7 @@ namespace Demo_ControlSystem.MainSystem
         {
             PERMISS.OnSysLevelChanging += ChangePermissionLevel;
             //委派方法
-            PERMISS.Permission_Level = PermissionList.Level_0_Guest;
+            //PERMISS.Permission_Level = PermissionList.Level_0_Guest;
         }
 
         #endregion
@@ -80,14 +102,21 @@ namespace Demo_ControlSystem.MainSystem
         /// <param name="Level"></param>
         private void ChangePermissionLevel(PermissionList Level)
         {
-            string _num = "***";
-            if (Level == PermissionList.Level_0_Guest) { _num = "Guest"; }
-            if (Level == PermissionList.Level_1_Operator) { _num = "Operator"; }
-            if (Level == PermissionList.Level_2_Engineer) { _num = "Engineer"; }
-            if (Level == PermissionList.Level_3_SeniorEngineer) { _num = "SeniorEngineer"; }
-            if (Level == PermissionList.Level_10_Designer) { _num = "Designer"; }
+            /*
+            if (Level == PermissionList.Level_0_Guest) { _levelState = "Guest"; }
+            if (Level == PermissionList.Level_1_Operator) { _levelState = "Operator"; }
+            if (Level == PermissionList.Level_2_Engineer) { _levelState = "Engineer"; }
+            if (Level == PermissionList.Level_3_SeniorEngineer) { _levelState = "SeniorEngineer"; }
+            if (Level == PermissionList.Level_10_Designer) { _levelState = "Designer"; }
+            */
+            if (Level == PermissionList.Level_0_Guest) { LevelState = "Guest"; }
+            if (Level == PermissionList.Level_1_Operator) { LevelState = "Operator"; }
+            if (Level == PermissionList.Level_2_Engineer) { LevelState = "Engineer"; }
+            if (Level == PermissionList.Level_3_SeniorEngineer) { LevelState = "SeniorEngineer"; }
+            if (Level == PermissionList.Level_10_Designer) { LevelState = "Designer"; }
 
-            SYSOnSysLevelChanging(_num);
+            
+            //SYSOnSysLevelChanging();
 
             //label9.Text = "Permission : " + _num;
             CheckPermission(Level);

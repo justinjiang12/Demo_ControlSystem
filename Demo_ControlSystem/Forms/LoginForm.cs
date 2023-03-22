@@ -45,10 +45,14 @@ namespace Demo_ControlSystem.Forms
                 if (tex_name.Text == "seng" && tex_password.Text == "seng") { _SYSPermiss.PERMISS.Permission_Level = PermissionList.Level_3_SeniorEngineer; }
                 if (tex_name.Text == "mirdc" && tex_password.Text == "102691") { _SYSPermiss.PERMISS.Permission_Level = PermissionList.Level_10_Designer; }
 
+
             }
             catch (Exception x) { MessageBox.Show(x.ToString(), "systen error!!!"); }
         }
 
-
+        private void LoginForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Hide();
+        }
     }
 }

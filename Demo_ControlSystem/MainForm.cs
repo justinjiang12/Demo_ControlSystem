@@ -18,12 +18,19 @@ namespace Demo_ControlSystem
 
         public MainForm()
         {
+            MianForm_Initial();
             InitializeComponent();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void MianForm_Initial()
         {
             SYSCONTROL.SYSOnSysLevelChanging += changeLevel;
+        }
+
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            
         }
 
 
@@ -67,9 +74,10 @@ namespace Demo_ControlSystem
         #endregion
 
 
-        private void changeLevel(string _level)
+        private void changeLevel(string _state)
         {
-            label1.Text ="Level: "+ _level;
+            //label1.Text ="Level: "+ SYSCONTROL.LevelState;
+            label1.Text = "Level: " + _state;
         }
 
 
@@ -77,10 +85,11 @@ namespace Demo_ControlSystem
         {
             using (var form = new Forms.LoginForm())
             {
+                form.SYSCONTROL = SYSCONTROL;
                 form.ShowDialog();
             }
+           
         }
-
 
     }
 }
