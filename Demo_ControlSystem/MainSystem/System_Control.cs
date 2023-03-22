@@ -11,42 +11,66 @@ namespace Demo_ControlSystem.MainSystem
     /// </summary>
     /// <param name="Level"></param>
     delegate void SYSChangePermission(string _state);
+    delegate void SYSChangeModel(string _state);
+    delegate void SYSChangeControl(string _state);
 
 
     class System_Control
     {
+        #region 實作物件
         internal System_List SYSLIST = new System_List();
         internal Permissions PERMISS = new Permissions();
+        #endregion
 
+        #region 事件宣告
         /// <summary>
-        /// 當權限等極切換時觸發(委派)
+        /// 當權限等級切換時觸發(委派)
         /// </summary>
         public event SYSChangePermission SYSOnSysLevelChanging;
+        public event SYSChangeModel SYSOnSysModelChanging;
+        public event SYSChangeControl SYSOnSysControlChanging;
+        #endregion
 
+        #region 狀態更新欄位
+        /// <summary>
+        /// 權限等級欄位(R)
+        /// </summary>
         private string _levelState = "***"; //對內訊號
-        public string LevelState
+        public string LevelState 
         {
-            get
-            {
-                return _levelState;
-            }
-            set
-            {
-                _levelState = value;
-                SYSOnSysLevelChanging(_levelState);
-            }
-        } //對外訊號(R/W)
+            get { return _levelState; }
+            private set { _levelState = value; SYSOnSysLevelChanging(_levelState); } 
+        }
 
+        /// <summary>
+        /// 控制狀態欄位(R/W)
+        /// </summary>
+        private string _sYSState = "***"; //對內訊號
+        public string SYSState
+        {
+            get { return _sYSState; }
+            set { _sYSState = value; SYSOnSysModelChanging(_sYSState); }
+        }
 
+        /// <summary>
+        /// 自動模式(啟動/停止)欄位(R/W)
+        /// </summary>
+        private string _sYSControlState = "***"; //對內訊號
+        public string SYSControState
+        {
+            get { return _sYSControlState; }
+            set { _sYSControlState = value; SYSOnSysControlChanging(_sYSControlState); }
+        }
+        #endregion
+
+        /// <summary>
+        /// 建構子
+        /// </summary>
         public System_Control()
         {
             ISystem_EventLoad();
             IPermission_EventLoad();
         }
-
-
-
-
 
         #region Event 管理(匯入)
 
@@ -109,13 +133,14 @@ namespace Demo_ControlSystem.MainSystem
             if (Level == PermissionList.Level_3_SeniorEngineer) { _levelState = "SeniorEngineer"; }
             if (Level == PermissionList.Level_10_Designer) { _levelState = "Designer"; }
             */
+            
             if (Level == PermissionList.Level_0_Guest) { LevelState = "Guest"; }
             if (Level == PermissionList.Level_1_Operator) { LevelState = "Operator"; }
             if (Level == PermissionList.Level_2_Engineer) { LevelState = "Engineer"; }
             if (Level == PermissionList.Level_3_SeniorEngineer) { LevelState = "SeniorEngineer"; }
             if (Level == PermissionList.Level_10_Designer) { LevelState = "Designer"; }
-
             
+
             //SYSOnSysLevelChanging();
 
             //label9.Text = "Permission : " + _num;
